@@ -1,0 +1,19 @@
+# JetBrains IDEs
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary / backup files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
