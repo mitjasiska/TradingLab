@@ -70,6 +70,10 @@ The lifecycle and acceptance implications are documented in [ATAS fill lifecycle
 
 Users can edit a session name or explicitly regenerate it from classified session parameters. Re-imports reuse sessions already linked by deterministic TradeIds. The behavior and generated-name format are documented in [Session names](docs/session-names.md).
 
+### Trade research has three distinct classification dimensions
+
+Playbooks identify the single primary reason for a trade, confluences capture additional market references, and tags capture qualitative review conditions. Classified/Unclassified state depends only on the playbook. The cardinalities and responsibility boundaries are documented in [Trade classification](docs/trade-classification.md).
+
 ## Current high-level status
 
 As of 2026-08-17:
@@ -96,6 +100,7 @@ Deeper system documentation:
 - [Deterministic TradeId contract](docs/trade-id.md)
 - [ATAS fill lifecycle](docs/atas-fill-lifecycle.md)
 - [Session name contract](docs/session-names.md)
+- [Trade classification contract](docs/trade-classification.md)
 - [Cross-project architecture decisions](docs/decisions.md)
 
 ## Development loop
