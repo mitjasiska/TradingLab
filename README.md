@@ -74,6 +74,10 @@ Users can edit a session name or explicitly regenerate it from classified sessio
 
 Playbooks identify the single primary reason for a trade, Market Regime records the trader's per-trade regime assessment, confluences capture additional market references, and tags capture qualitative review conditions. Classified/Unclassified state depends only on the playbook. The cardinalities and responsibility boundaries are documented in [Trade classification](docs/trade-classification.md).
 
+### Session Notes are separate research metadata
+
+Qualitative observations about a whole session are stored as editable Session Notes, separately from session identity and classification metadata. Importers create and reuse sessions but never create, replace, or clear Session Notes.
+
 ## Current high-level status
 
 As of 2026-08-17:
