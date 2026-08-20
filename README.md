@@ -80,7 +80,7 @@ Qualitative observations about a whole session are stored as editable Session No
 
 ## Current high-level status
 
-As of 2026-08-17:
+As of 2026-08-20:
 
 - **TradeStatistics:** working; historical-fill lifecycle hardened; real CSV/video TradeId matching verified.
 - **TradeVideoCapture:** working; historical-fill lifecycle hardened; rolling capture and export working; real TradeId matching verified.

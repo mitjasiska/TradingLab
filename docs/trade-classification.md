@@ -41,7 +41,7 @@ A trade is **Classified** only when it has one playbook. It is **Unclassified** 
 
 ## Retirement
 
-Playbook, Market Regime, confluence, and tag definitions have an active state. Inactive definitions are retired: they are hidden from new assignments by default, remain visible on historical trades where already attached, can be removed from those trades, and can be reactivated. Normal application workflows retire definitions rather than deleting them so historical meaning is preserved. Market Regime names are fixed; settings may only retire or reactivate the three seeded values.
+Playbook, Market Regime, confluence, and tag definitions have an active state. Inactive definitions are retired: they are hidden from new assignments by default, remain visible on historical trades where already attached, can be removed from those trades, and can be reactivated. Normal application workflows retire definitions rather than deleting them so historical meaning is preserved. Playbooks, confluences, and tags can be created and edited through Research Setup. Market Regime names are fixed; settings may only retire or reactivate the three seeded values.
 
 ## Responsibility boundaries
 
