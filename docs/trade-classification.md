@@ -4,16 +4,16 @@ TradingLab separates research classification into four independent dimensions wi
 
 | Dimension | Question | Cardinality per trade | Analytics role |
 | --- | --- | --- | --- |
-| Playbook | Why did I click? | `0..1` | Mutually exclusive primary performance bucket |
+| Setup | What trading pattern or opportunity did I take? | Exactly `1` after review; absent only while Unclassified | Mutually exclusive primary performance bucket |
 | Market Regime | What market regime did I believe was present for this trade? | `0..1` | Independent structured dimension for future statistical filtering and grouping |
 | Confluence | What else was present at the level? | `0..N` | Secondary filter or conditional-analysis dimension |
 | Tag | What was going on with me or the execution? | `0..N` | Mistakes, psychology, circumstances; qualitative metadata only |
 
-## Playbook
+## Setup
 
-A playbook is the primary setup or reference that caused the trade level to be identified before price arrived. A trade can have no playbook while it is awaiting classification, but the database must never allow more than one.
+A Setup is the trading pattern or opportunity associated with a trade, such as `VWAP Continuation`, `Band Continuation`, `Band Fade`, `PDL Rejection`, or `PDH Rejection`. Setup definitions are independent research entities: trades reference them, and future workflows may record opportunities that were not traded without introducing another trading-pattern concept.
 
-Multiple playbooks are forbidden because playbook statistics must be mutually exclusive. When several references coincide, such as VWAP, POC, LVN, or a VWAP band, the reason that actually identified the level is the playbook and the other references are confluences. If the primary reason is unclear, keep the trade unclassified and record the ambiguity with a tag. A recurring combination that proves to be a distinct setup should become its own single playbook.
+Every completed trade review requires exactly one Setup. An imported trade can temporarily have no Setup only while awaiting classification; the database must never allow more than one assignment, and the research save operation rejects a missing Setup. When several market conditions coincide, the trading pattern is the Setup and the other conditions are Confluences.
 
 ## Market Regime
 
@@ -27,30 +27,30 @@ A trade has zero or one Market Regime. The fixed values are exactly:
 
 `NULL` means the trade has not yet been classified for Market Regime. `Undecided` means the trader explicitly assessed the regime and concluded it was undecided. These states are distinct: existing trades remain `NULL` until manually reviewed, and the application must not default or backfill them to `Undecided`.
 
-Market Regime is independent of Playbook, Confluences, and Tags. It is structured research metadata, not a tag, and may later support statistical filtering, grouping, expectancy comparisons, and MAE/MFE comparisons.
+Market Regime is independent of Setup, Confluences, and Tags. It is structured research metadata, not a tag, and may later support statistical filtering, grouping, expectancy comparisons, and MAE/MFE comparisons.
 
 ## Confluences and tags
 
 Confluences are atomic market conditions that accompanied the primary setup. Store coincident conditions as separate confluences rather than combined labels such as `POC + LVN`.
 
-Tags describe mistakes, psychology, execution circumstances, ambiguity, or other qualitative review conditions. Tags do not replace a playbook and must not be used as primary performance buckets. The existing optional tag category may organize this qualitative vocabulary, but it does not affect classification state or analytics semantics.
+Tags describe mistakes, psychology, execution circumstances, ambiguity, or other qualitative review conditions. Tags do not replace a Setup and must not be used as primary performance buckets. The existing optional tag category may organize this qualitative vocabulary, but it does not affect classification state or analytics semantics.
 
 ## Classification state
 
-A trade is **Classified** only when it has one playbook. It is **Unclassified** when it has no playbook. Market Regime, confluences, tags, and Notes do not change that state. A trade with a Market Regime but no playbook remains Unclassified. Removing a playbook immediately returns the trade to the unclassified review population.
+A trade is **Classified** only when it has one Setup. It is **Unclassified** while its Setup is missing. Market Regime, Confluences, Tags, and Notes do not change that state. Once assigned, Setup is required: it can be replaced with another Setup but cannot be cleared by the research save workflow.
 
 ## Retirement
 
-Playbook, Market Regime, confluence, and tag definitions have an active state. Inactive definitions are retired: they are hidden from new assignments by default, remain visible on historical trades where already attached, can be removed from those trades, and can be reactivated. Normal application workflows retire definitions rather than deleting them so historical meaning is preserved. Playbooks, confluences, and tags can be created and edited through Research Setup. Market Regime names are fixed; settings may only retire or reactivate the three seeded values.
+Setup, Market Regime, Confluence, and Tag definitions have an active state. Inactive definitions are retired: they are hidden from new assignments by default, remain visible on historical trades where already attached, can be replaced or removed where their dimension permits, and can be reactivated. Normal application workflows retire definitions rather than deleting them so historical meaning is preserved. Setups, Confluences, and Tags can be created and edited through Research Settings. Market Regime names are fixed; settings may only retire or reactivate the three seeded values.
 
 ## Responsibility boundaries
 
-The database owns structural cardinality, referential integrity, replacement semantics, and atomic persistence. In particular, it guarantees at most one playbook relationship and one nullable Market Regime reference per trade, and saves the playbook, Market Regime, confluences, tags, and Notes together.
+The database owns structural cardinality, referential integrity, replacement semantics, and atomic persistence. In particular, it guarantees at most one Setup relationship, requires a Setup when research is saved, permits one nullable Market Regime reference, and saves Setup, Market Regime, Confluences, Tags, and Notes together.
 
-The frontend represents the cardinalities directly, offers only active definitions for new assignments, preserves attached inactive definitions until removed, and determines Classified/Unclassified state only from the playbook relationship. Market Regime uses a clearable single-select with no free-text creation or default. Relationship loading remains batched.
+The frontend represents the cardinalities directly, offers only active definitions for new assignments, preserves an attached inactive Setup until it is replaced, and determines Classified/Unclassified state only from the Setup relationship. Setup uses a required single-select. Market Regime uses a clearable single-select with no free-text creation or default. Relationship loading remains batched.
 
 The importers and source-data producers do not create or infer these research classifications.
 
 ## Analytics semantics
 
-Future statistics may group trades by the single playbook, then filter or condition those results by Market Regime and confluences. Tags remain qualitative metadata and must not be counted as mutually exclusive setup categories.
+Statistics group trades by their single Setup, then may filter or condition those results by Market Regime and Confluences. Tags remain qualitative metadata and must not be counted as mutually exclusive setup categories.

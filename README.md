@@ -72,7 +72,7 @@ Users can edit a session name or explicitly regenerate it from classified sessio
 
 ### Trade research has four distinct classification dimensions
 
-Playbooks identify the single primary reason for a trade, Market Regime records the trader's per-trade regime assessment, confluences capture additional market references, and tags capture qualitative review conditions. Classified/Unclassified state depends only on the playbook. The cardinalities and responsibility boundaries are documented in [Trade classification](docs/trade-classification.md).
+Setup identifies the single trading pattern or opportunity associated with a trade, Market Regime records the trader's per-trade regime assessment, confluences capture additional market conditions at the setup location, and tags capture qualitative review conditions. A saved trade review requires exactly one Setup; imported trades remain Unclassified until that assignment is made. The cardinalities and responsibility boundaries are documented in [Trade classification](docs/trade-classification.md).
 
 ### Session Notes are separate research metadata
 
@@ -80,7 +80,7 @@ Qualitative observations about a whole session are stored as editable Session No
 
 ## Current high-level status
 
-As of 2026-08-20:
+As of 2026-08-21:
 
 - **TradeStatistics:** working; historical-fill lifecycle hardened; real CSV/video TradeId matching verified.
 - **TradeVideoCapture:** working; historical-fill lifecycle hardened; rolling capture and export working; real TradeId matching verified.
